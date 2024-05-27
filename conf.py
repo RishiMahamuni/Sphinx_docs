@@ -34,13 +34,9 @@ pygments_dark_style = "monokai"  # for dark mode
 
 html_theme_options = {
     "light_css_variables": {
-        "color-brand-primary": "#7C4DFF",
-        "color-brand-content": "#7C4DFF",
+        "color-brand-primary": "red",
+        "color-brand-content": "#CC3333",
+        "color-admonition-background": "orange",
     },
-    "dark_css_variables": {
-        "color-brand-primary": "#FF79C6",
-        "color-brand-content": "#FF79C6",
-    }
 }
-
 
