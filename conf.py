@@ -40,3 +40,10 @@ html_theme_options = {
     },
 }
 
+```{note}
+Here is a note!
+```
+
+.. important::
+
+   Tech is not neutral, nor is it apolitical.
