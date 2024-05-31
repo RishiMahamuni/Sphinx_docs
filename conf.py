@@ -39,11 +39,3 @@ html_theme_options = {
         "color-admonition-background": "orange",
     },
 }
-
-```{note}
-Here is a note!
-```
-
-.. important::
-
-   Tech is not neutral, nor is it apolitical.
