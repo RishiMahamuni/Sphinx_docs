@@ -12,8 +12,11 @@ df = pd.read_excel(file_path, sheet_name=sheet_name)
 if 'predict' in df.columns:
     # Create 'probability' column based on the 'predict' column values
     df['probability'] = df['predict'].apply(
-        lambda x: np.random.uniform(0.88, 0.95) if x == 1 else np.random.uniform(0.60, 0.75)
+        lambda x: round(np.random.uniform(0.88, 0.95), 4) if x == 1 else round(np.random.uniform(0.60, 0.75), 4)
     )
+    
+    # Create 'log loss' column
+    df['log loss'] = round(1 - df['probability'], 4)
 else:
     raise ValueError("'predict' column is missing from the Excel sheet")
 
@@ -21,5 +24,5 @@ else:
 print(df)
 
 # Save the DataFrame to a new Excel file if needed
-output_file_path = 'output_with_probabilities.xlsx'
+output_file_path = 'output_with_probabilities_and_log_loss.xlsx'
 df.to_excel(output_file_path, index=False)
