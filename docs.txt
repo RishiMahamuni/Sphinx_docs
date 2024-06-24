@@ -15,3 +15,73 @@ Commentary:
 Bias for Action: Exhibited a bias for action by rapidly assimilating into the new team while continuing to manage existing responsibilities effectively. Prioritized tasks to balance both roles without compromising the quality of work.
 Example: Developed a structured plan to allocate time and resources between new team commitments and existing application responsibilities. This approach ensured that deadlines were met and key deliverables were achieved on time.
 Outcome: Successfully managed dual roles, demonstrating agility and adaptability, and maintained a high standard of performance across all assigned tasks.
+
+
+1. Training and Awareness
+Competency: Continuous Learning and Professional Development
+
+Commentary:
+Continuous Learning: Engaged actively in training and development to stay current with advancements in data science methodologies and tools.
+Example: Completed courses on advanced machine learning algorithms and attended industry conferences. Participated in internal workshops to enhance technical skills and domain knowledge.
+Outcome: Applied new knowledge to improve the efficiency and effectiveness of data analysis processes, leading to more accurate insights and solutions.
+2. Ethical Use of Data
+Competency: Ethical Standards and Integrity
+
+Commentary:
+Ethical Standards: Demonstrated a strong commitment to the ethical use of data by adhering to company guidelines and industry best practices for data privacy and security.
+Example: Implemented robust data anonymization techniques and regularly audited data usage to ensure compliance with ethical standards. Provided feedback on the ethical implications of proposed data collection strategies.
+Outcome: Enhanced the trustworthiness of data-driven decisions and maintained compliance with regulatory requirements, safeguarding the organization’s reputation.
+3. Data Quality Awareness
+Competency: Data Governance and Quality Assurance
+
+Commentary:
+Data Governance: Promoted a culture of data quality awareness by establishing clear data governance policies and practices.
+Example: Developed and implemented a data quality framework that includes regular data validation checks, monitoring, and reporting. Conducted training sessions for the team on best practices for data quality management.
+Outcome: Improved the accuracy and reliability of data used in analysis and reporting, which enhanced decision-making capabilities and reduced errors.
+4. Model Risk Management in Model Development
+Competency: Risk Management and Compliance
+
+Commentary:
+Risk Management: Effectively managed risks associated with model development by integrating risk assessment processes throughout the model lifecycle.
+Example: Identified potential risks in model design and implementation, such as biases or overfitting. Developed mitigation strategies including model validation, stress testing, and regular reviews.
+Outcome: Reduced the likelihood of adverse outcomes due to model failures, ensuring that deployed models are robust and reliable under various scenarios.
+5. Model Robustness and Accuracy
+Competency: Technical Excellence and Quality
+
+Commentary:
+Technical Excellence: Focused on ensuring model robustness and accuracy through rigorous testing and validation processes.
+Example: Conducted comprehensive model evaluations using cross-validation, out-of-sample testing, and performance benchmarking against established metrics. Regularly updated models to incorporate new data and improve accuracy.
+Outcome: Delivered high-performing models that consistently produced accurate and reliable predictions, contributing to better business outcomes and strategic insights.
+
+
+Financial Performance Goal Commentary
+1. Enhancement of Customer Engagement
+Goal: Increase Customer Engagement and Satisfaction
+
+Commentary:
+Customer Focus: Enhanced customer engagement by implementing targeted strategies to understand and address customer needs.
+Example: Launched personalized communication campaigns using data insights to tailor messages and offers to individual customer preferences. Leveraged customer analytics to identify engagement opportunities and optimize interaction channels.
+Outcome: Achieved a X% increase in customer interaction rates and a Y% improvement in customer satisfaction scores. Enhanced engagement has contributed to a significant uplift in revenue and customer loyalty.
+2. Client Feedback Utilization
+Goal: Improve Services through Client Feedback
+
+Commentary:
+Feedback Integration: Utilized client feedback effectively to refine products and services, aligning them more closely with client needs and expectations.
+Example: Established a systematic process for collecting, analyzing, and acting on client feedback. Integrated feedback insights into the development cycle, leading to enhancements in service features and performance.
+Outcome: Implemented changes based on client feedback resulted in a X% reduction in customer complaints and a Y% increase in client retention rates. These improvements have bolstered client satisfaction and driven financial growth.
+Client and Franchise Outcome Commentary
+1. Impact Mitigation
+Goal: Mitigate Adverse Impacts on Clients and Franchises
+
+Commentary:
+Proactive Mitigation: Implemented proactive measures to mitigate potential adverse impacts on clients and franchises, ensuring stability and resilience.
+Example: Developed a risk management framework to identify and address potential disruptions. Conducted regular assessments and scenario planning to prepare for and mitigate the impact of market changes or operational issues.
+Outcome: Successfully mitigated risks leading to minimal client disruption during market volatility, maintaining X% franchise stability. These actions have preserved client trust and protected revenue streams.
+
+2. Client as Centre
+Goal: Foster a Client-Centric Approach
+
+Commentary:
+Client-Centric Approach: Prioritized a client-centric approach by placing client needs at the forefront of decision-making processes and service delivery.
+Example: Introduced a dedicated client success team to provide personalized support and address client issues promptly. Implemented regular client feedback sessions to better understand their expectations and adapt services accordingly.
+Outcome: Achieved a X% increase in client satisfaction and a Y% boost in net promoter score (NPS). This client-centric focus has strengthened client relationships and contributed to higher retention and revenue growth.
