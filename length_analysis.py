@@ -19,13 +19,13 @@ def average_sentence_length(text):
     words = re.findall(r'\b\w+\b', str(text))
     return len(words) / len(sentences) if sentences else 0
 
-def length_analysis(column):
+def length_analysis(row):
     return {
-        'word_count': column.apply(word_count).sum(),
-        'char_count': column.apply(char_count).sum(),
-        'sentence_count': column.apply(sentence_count).sum(),
-        'average_word_length': column.apply(average_word_length).mean(),
-        'average_sentence_length': column.apply(average_sentence_length).mean()
+        'word_count': word_count(row),
+        'char_count': char_count(row),
+        'sentence_count': sentence_count(row),
+        'average_word_length': average_word_length(row),
+        'average_sentence_length': average_sentence_length(row)
     }
 
 # Define the input and output Excel file paths
@@ -37,14 +37,17 @@ df = pd.read_excel(input_file, sheet_name='MCA')
 
 # Check if the column "QUERY" exists in the DataFrame
 if 'QUERY' in df.columns:
-    # Perform length analysis on the "QUERY" column
-    analysis_result = length_analysis(df['QUERY'])
+    # Perform length analysis on each row in the "QUERY" column
+    analysis_results = df['QUERY'].apply(length_analysis)
 
-    # Convert the result to a DataFrame
-    analysis_df = pd.DataFrame(analysis_result, index=[0])
+    # Convert the results to a DataFrame
+    analysis_df = pd.DataFrame(list(analysis_results))
 
-    # Write the analysis DataFrame to a new Excel file
-    analysis_df.to_excel(output_file, index=False)
+    # Combine the original DataFrame with the analysis DataFrame
+    result_df = pd.concat([df, analysis_df], axis=1)
+
+    # Write the combined DataFrame to a new Excel file
+    result_df.to_excel(output_file, index=False)
 
     print("Length analysis completed. Check the output Excel file.")
 else:
