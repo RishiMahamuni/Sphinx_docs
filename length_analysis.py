@@ -52,3 +52,8 @@ if 'QUERY' in df.columns:
     print("Length analysis completed. Check the output Excel file.")
 else:
     print("The column 'QUERY' does not exist in the sheet 'MCA'.")
+    
+"ltex.languageToolHttpServerUri": null,
+"ltex.files.include": [
+    "*.gin"
+]
