@@ -1,28 +1,18 @@
-# my_custom_component.py
-
-from typing import Dict, Any, List
-from rasa.engine.graph import GraphComponent, ExecutionContext
-from rasa.shared.nlu.training_data.message import Message
+from rasa.engine.graph import GraphComponent
 from rasa.shared.nlu.training_data.training_data import TrainingData
 
 class MyCustomComponent(GraphComponent):
-    """A custom NLU component that adds a simple feature to the message."""
-
     @staticmethod
-    def get_default_config() -> Dict[str, Any]:
-        return {
-            "example_param": "default_value"
-        }
+    def required_components():
+        return []
 
-    def __init__(self, config: Dict[str, Any], name: str, execution_context: ExecutionContext) -> None:
-        self.example_param = config.get("example_param", "default_value")
+    def __init__(self, config):
+        self.config = config
 
-    def process(self, messages: List[Message]) -> List[Message]:
-        for message in messages:
-            # Add a custom attribute to the message
-            message.set("my_custom_feature", self.example_param)
-        return messages
+    def process_training_data(self, training_data: TrainingData) -> TrainingData:
+        # Your logic to process training data
+        return training_data
 
-    def train(self, training_data: TrainingData) -> None:
-        """Custom training logic, if any, can be added here."""
+    def process(self, message, **kwargs):
+        # Your logic to process individual messages
         pass
