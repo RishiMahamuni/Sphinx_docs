@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Rasa Train",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/venv/bin/rasa",
+            "args": [
+                "train"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+                "RASA_LOG_LEVEL": "DEBUG"
+            },
+            "justMyCode": true,
+            "internalConsoleOptions": "neverOpen"
+        }
+    ]
+}
