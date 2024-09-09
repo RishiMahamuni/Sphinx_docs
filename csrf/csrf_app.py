@@ -1,37 +1,62 @@
-from flask import Flask, jsonify, request, session
-from flask_wtf.csrf import CSRFProtect, generate_csrf
+from flask import Flask, jsonify, request, session, abort
+from flask_wtf.csrf import CSRFProtect, generate_csrf, validate_csrf
 import os
+import re
 
 app = Flask(__name__)
 
-# Secret key for session management and CSRF token generation
-app.config['SECRET_KEY'] = os.urandom(24)
+# Secure the app with session, CSRF protection, and secure cookies
+app.config['SECRET_KEY'] = os.urandom(24)  # Secure session key
+app.config['SESSION_COOKIE_SECURE'] = True  # Send cookies only over HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript from accessing the cookie
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Prevent CSRF attacks via third-party sites
 
 # Enable CSRF protection
 csrf = CSRFProtect(app)
 
-# Route to return JSON data and dynamically generated CSRF token
+# Input validation for trade data (example regex)
+TRADE_DATE_REGEX = r"^\d{2}/\d{2}/\d{4}$"  # Simple regex for MM/DD/YYYY
+
+# Secure route that serves CSRF token and requires token for POST requests
 @app.route('/api/data', methods=['GET', 'POST'])
 def data():
-    # Generate a new CSRF token for each request
-    csrf_token = generate_csrf()
-
-    # Return data along with the CSRF token in the response
-    data = {
-        "trade_date": "03/05/2020",
-        "transaction_amount": 1500.50,
-        "status": "Completed",
-        "csrf_token": csrf_token  # Include CSRF token in response
-    }
+    if request.method == 'GET':
+        # Generate a new CSRF token and send it to the client
+        csrf_token = generate_csrf()
+        response_data = {
+            "message": "CSRF token generated for security.",
+            "csrf_token": csrf_token
+        }
+        return jsonify(response_data)
     
-    return jsonify(data)
+    if request.method == 'POST':
+        # Get CSRF token from request headers and validate it
+        csrf_token = request.headers.get('X-CSRFToken')
+        if not csrf_token:
+            abort(403, description="CSRF token missing or invalid.")
+        
+        try:
+            validate_csrf(csrf_token)
+        except Exception as e:
+            abort(403, description=f"CSRF token validation failed: {str(e)}")
+        
+        # Input validation for trade date
+        trade_date = request.json.get('trade_date')
+        if not trade_date or not re.match(TRADE_DATE_REGEX, trade_date):
+            abort(400, description="Invalid trade date format. Expected MM/DD/YYYY.")
 
-# Protected route that requires a valid CSRF token in the headers
-@app.route('/api/secure', methods=['POST'])
-@csrf.exempt  # We can also skip this in case of API (by default)
-def secure_data():
-    # CSRF token will be validated automatically by Flask-WTF
-    return jsonify({"message": "Secure data accessed!"})
+        transaction_amount = request.json.get('transaction_amount')
+        if not isinstance(transaction_amount, (int, float)) or transaction_amount <= 0:
+            abort(400, description="Invalid transaction amount.")
 
+        status = request.json.get('status')
+        if not status or len(status) > 255:
+            abort(400, description="Invalid status.")
+
+        # If all validations pass, return success
+        return jsonify({"message": "Data processed successfully", "status": "success"})
+
+
+# Start the app
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)  # Disable debug mode for security
