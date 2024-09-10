@@ -4,7 +4,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import re
 
-
 class CosineSimilarityComponent(Component):
     name = "cosine_similarity"
     provides = ["similarity_score"]
@@ -64,8 +63,9 @@ class CosineSimilarityComponent(Component):
             for ent in filter_params:
                 entity_value = ent.get("value", "")
                 if entity_value:
-                    cleaned_value = self.clean_entity_value(entity_value)
+                    cleaned_value, matched_word = self.clean_entity_value(entity_value)
                     ent["value"] = cleaned_value
+                    ent["matched_word"] = matched_word  # Add matched word to the entity
                 cleaned_filter_params.append(ent)
 
             cleaned_entities.append({"filter_params": cleaned_filter_params})
@@ -73,16 +73,20 @@ class CosineSimilarityComponent(Component):
         return cleaned_entities
 
     def clean_entity_value(self, entity_value):
-        """Clean the entity value by removing exact matches and similar words."""
+        """Clean the entity value by removing exact matches and similar words, return matched word."""
         original_value = entity_value
         entity_value = entity_value.lower()  # Normalize to lowercase
+        matched_word = None  # To track the word that matched
 
         # Step 1: Exact word match removal
         for word in self.word_list:
-            entity_value = re.sub(rf'\b{word}\b', '', entity_value).strip()
+            if re.search(rf'\b{word}\b', entity_value):  # If word is found in entity_value
+                entity_value = re.sub(rf'\b{word}\b', '', entity_value).strip()
+                matched_word = word  # Track the exact matched word
+                break  # Break after finding the first match
 
         # Step 2: If there's still value left, check for cosine similarity
-        if entity_value:
+        if entity_value and not matched_word:  # If no exact match was found, proceed with cosine similarity
             corpus = [entity_value] + self.word_list
             vectorizer = CountVectorizer().fit_transform(corpus)
             vectors = vectorizer.toarray()
@@ -94,11 +98,13 @@ class CosineSimilarityComponent(Component):
                 if score >= self.similarity_threshold:
                     matches.append(self.word_list[idx])
 
-            # Remove matching words from entity value
+            # Remove matching words from entity value and track the first match
             for match in matches:
                 entity_value = entity_value.replace(match, "").strip()
+                matched_word = match  # Track the first similar match
+                break
 
-        return entity_value if entity_value else original_value  # Return cleaned value or original if empty
+        return entity_value if entity_value else original_value, matched_word  # Return cleaned value and matched word
 
     def persist(self, model_dir):
         """No need to persist this component."""
