@@ -2,6 +2,7 @@ from rasa.nlu.components import Component
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import re
 
 
 class CosineSimilarityComponent(Component):
@@ -10,8 +11,8 @@ class CosineSimilarityComponent(Component):
     requires = ["text", "entities"]
 
     defaults = {
-        "word_list": ["trade", "status", "information search"],
-        "similarity_threshold": 0.75  # A threshold for similarity
+        "word_list": ["contains", "equals", "trade", "status", "information search"],
+        "similarity_threshold": 0.75  # Threshold for similarity
     }
 
     def __init__(self, component_config=None):
@@ -46,36 +47,58 @@ class CosineSimilarityComponent(Component):
             "score": float(best_match_score)
         })
 
-        # Process entities and remove matching parts based on cosine similarity
-        cleaned_entities = []
-        for entity in entities:
-            entity_value = entity.get("value")
-            if entity_value:
-                cleaned_value = self.clean_entity_value(entity_value)
-                entity["value"] = cleaned_value
-            cleaned_entities.append(entity)
+        # Process entities and remove matching parts based on cosine similarity and exact matching
+        cleaned_entities = self.clean_entities(entities)
 
         # Update message entities
         message.set("entities", cleaned_entities)
 
+    def clean_entities(self, entities):
+        """Clean the entities based on exact matches and cosine similarity."""
+        cleaned_entities = []
+        
+        for entity_dict in entities:
+            filter_params = entity_dict.get("filter_params", [])
+            cleaned_filter_params = []
+
+            for ent in filter_params:
+                entity_value = ent.get("value", "")
+                if entity_value:
+                    cleaned_value = self.clean_entity_value(entity_value)
+                    ent["value"] = cleaned_value
+                cleaned_filter_params.append(ent)
+
+            cleaned_entities.append({"filter_params": cleaned_filter_params})
+
+        return cleaned_entities
+
     def clean_entity_value(self, entity_value):
-        """Check if any part of the entity value matches with a word in the word_list using cosine similarity."""
-        corpus = [entity_value] + self.word_list
-        vectorizer = CountVectorizer().fit_transform(corpus)
-        vectors = vectorizer.toarray()
+        """Clean the entity value by removing exact matches and similar words."""
+        original_value = entity_value
+        entity_value = entity_value.lower()  # Normalize to lowercase
 
-        # Calculate cosine similarity between entity value and each word in the list
-        cosine_sim = cosine_similarity(vectors[0:1], vectors[1:])
-        matches = []
-        for idx, score in enumerate(cosine_sim[0]):
-            if score >= self.similarity_threshold:
-                matches.append(self.word_list[idx])
+        # Step 1: Exact word match removal
+        for word in self.word_list:
+            entity_value = re.sub(rf'\b{word}\b', '', entity_value).strip()
 
-        # Remove matching words from entity value
-        for match in matches:
-            entity_value = entity_value.replace(match, "").strip()
+        # Step 2: If there's still value left, check for cosine similarity
+        if entity_value:
+            corpus = [entity_value] + self.word_list
+            vectorizer = CountVectorizer().fit_transform(corpus)
+            vectors = vectorizer.toarray()
 
-        return entity_value
+            # Calculate cosine similarity between entity value and each word in the list
+            cosine_sim = cosine_similarity(vectors[0:1], vectors[1:])
+            matches = []
+            for idx, score in enumerate(cosine_sim[0]):
+                if score >= self.similarity_threshold:
+                    matches.append(self.word_list[idx])
+
+            # Remove matching words from entity value
+            for match in matches:
+                entity_value = entity_value.replace(match, "").strip()
+
+        return entity_value if entity_value else original_value  # Return cleaned value or original if empty
 
     def persist(self, model_dir):
         """No need to persist this component."""
