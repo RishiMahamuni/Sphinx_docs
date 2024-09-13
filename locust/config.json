@@ -1,13 +1,13 @@
 {
     "host": "http://localhost:8000",
-    "endpoint": "/api/test",
-    "users": 100,
-    "spawn_rate": 10,
-    "run_time": "5m",
-    "min_wait": 1,
-    "max_wait": 5,
+    "endpoint": "/api/long-running-task",
+    "users": 4,  // You can increase this as needed
+    "spawn_rate": 2,  // This controls how quickly the users are spawned
+    "run_time": "10m",  // Run the test for a long enough period (e.g., 10 minutes)
+    "min_wait": 1000,  // Minimum wait time in milliseconds (1 second)
+    "max_wait": 5000,  // Maximum wait time in milliseconds (5 seconds)
     "payload": {
-        "key1": "value1",
-        "key2": "value2"
+        "param1": "value1",
+        "param2": "value2"
     }
 }
