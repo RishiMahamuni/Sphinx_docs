@@ -1,0 +1,13 @@
+{
+    "host": "http://localhost:8000",
+    "endpoint": "/api/test",
+    "users": 100,
+    "spawn_rate": 10,
+    "run_time": "5m",
+    "min_wait": 1,
+    "max_wait": 5,
+    "payload": {
+        "key1": "value1",
+        "key2": "value2"
+    }
+}
