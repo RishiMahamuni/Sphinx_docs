@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Locust Load Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/locustfile.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-f", "${workspaceFolder}/locustfile.py",
+                "--host", "${workspaceFolder}/config.json:host",
+                "--users", "${workspaceFolder}/config.json:users",
+                "--spawn-rate", "${workspaceFolder}/config.json:spawn_rate",
+                "--run-time", "${workspaceFolder}/config.json:run_time"
+            ]
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 import json
 from locust import HttpUser, TaskSet, task, between
 
-# Load configuration dynamically
+# Load configuration dynamically from config.json
 with open("config.json") as config_file:
     config = json.load(config_file)
 
